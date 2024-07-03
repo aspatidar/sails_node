@@ -21,6 +21,14 @@ module.exports.routes = {
 
   '/': { view: 'pages/homepage' },
 
+  // Authentication routes 
+  'post /api/signup' : 'AuthController.registerUSer',
+  'get /api/login' : 'AuthController.loginUser',
+
+  // Products 
+  'post /api/product/create' :'ProductController.createProduct',
+
+
 
   /***************************************************************************
   *                                                                          *

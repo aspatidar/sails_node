@@ -31,7 +31,6 @@ module.exports.datastores = {
   * (For production configuration, see `config/env/production.js`.)          *
   *                                                                          *
   ***************************************************************************/
-
   default: {
 
     /***************************************************************************
@@ -48,8 +47,8 @@ module.exports.datastores = {
     *    (See https://sailsjs.com/config/datastores for help.)                 *
     *                                                                          *
     ***************************************************************************/
-    // adapter: 'sails-mysql',
-    // url: 'mysql://user:password@host:port/database',
+    adapter: require('sails-postgresql'),
+    url: 'postgresql://postgres:admin@123@localhost:5432/sails_crud'
 
   },
 

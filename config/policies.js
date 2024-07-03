@@ -17,6 +17,8 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
+  '*': 'isLoggedIn',
+  // 'api/product/*': 'tokenValidator'
 
+  
 };
