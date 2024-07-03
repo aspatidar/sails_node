@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-createProduct = async(req, res) =>{
+const createProduct = async(req, res) =>{
     const {name, description, quantity, price } = req.body;
     const authHeader = req.headers["authorization"];
     const token = authHeader.split(" ")[1];
