@@ -27,6 +27,10 @@ module.exports.routes = {
 
   // Products 
   'post /api/product/create' :'ProductController.createProduct',
+  'get /api/products': 'ProductController.getAllProducts',
+  'get /api/product/:id': 'ProductController.getProductById',
+  'patch /api/product/update/:id': 'ProductController.updateProduct',
+  'delete /api/product/delete/:id': 'ProductController.deleteProduct',
 
 
 

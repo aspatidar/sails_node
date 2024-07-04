@@ -17,8 +17,14 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  '*': 'isLoggedIn',
-  // 'api/product/*': 'tokenValidator'
+  '*': 'isLogging',
+  ProductController :{
+    'createProduct': ['tokenValidator'],
+    'getAllProducts': ['tokenValidator'],
+    'getProductById': ['tokenValidator'],
+    'updateProduct': ['tokenValidator'],
+    'deleteProduct': ['tokenValidator'],
+  }
 
   
 };
