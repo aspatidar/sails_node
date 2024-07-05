@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 // Action: Validating the request 
-const validateRequest = async (payload) => {
+const validateRequest = (payload) => {
   const schema = Joi.object({
     name: Joi.string().required(),
     description: Joi.string().required(),
@@ -9,7 +9,7 @@ const validateRequest = async (payload) => {
     price: Joi.number().required(),
     user_id: Joi.number().required()
   });
-  const validate = await schema.validate(payload);
+  const validate = schema.validate(payload);
   return validate;
 };
 

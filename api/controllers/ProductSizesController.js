@@ -1,20 +1,14 @@
 const Joi = require("joi");
 
 // Action: Validating the request 
-const validateRequest = async (payload, req, res) => {
+const validateRequest = (payload, req, res) => {
   const schema = Joi.object({
     product_id: Joi.number().required(),
     width: Joi.number().required(),
     height: Joi.number().required(),
   });
-  const {error, value} = await schema.validate(payload);
-  if (error) {
-    return res.status(400)
-      .json({
-        msg: "Some fields are not valid please check",
-        error: error,
-      });
-  }
+  const validate = schema.validate(payload);
+  return validate;
 };
 
 // Action : Creating sizes 
@@ -26,7 +20,16 @@ const createSizes = async (req, res) => {
     height: height,
   };
 
-  validateRequest(payload, req, res);
+  const {error, value} = validateRequest(payload);
+  if (error) {
+    return res.status(400)
+      .json({
+        msg: "Some fields are not valid please check",
+        error: error,
+      });
+  }if(error){
+
+  }
   const productSize = await sails.models.productsizes.find({
     where: {
       product_id: product_id,
