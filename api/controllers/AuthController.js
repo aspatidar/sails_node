@@ -1,5 +1,29 @@
 const {generateToken} = require('../services');
 const bcrypt = require('bcrypt');
+const Joi = require("joi");
+
+// Action: Validating the request 
+const validateRegisterRequest = (payload) => {
+  const schema = Joi.object({
+    first_name: Joi.string().required(),
+    last_name: Joi.string(),
+    email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+    password: Joi.string().alphanum().required(),
+  });
+  const validate = schema.validate(payload);
+  // console.log('coming here', validate);
+  return validate;
+};
+
+// Action: Validate Login request 
+const validateLoginRequest = (payload) => {
+  const schema = Joi.object({
+    email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+    password: Joi.string().alphanum().required(),
+  });
+  const validate = schema.validate(payload);
+  return validate;
+};
 
 const registerUSer = async (req, res) => {
   const { first_name, last_name, email, password } = req.body;
@@ -9,10 +33,16 @@ const registerUSer = async (req, res) => {
     email: email,
     password: password,
   };
-
-  if(!first_name || !last_name || !email || !password){
-    return res.status(401).json({ msg: "all fields are required ..." });
-  }
+  sails.log.info('Process initiated to create user');
+  const {error, value} = validateRegisterRequest(payload);
+  if (error) {
+      sails.log.warn('Validation failed for user creation');
+      return res.status(400)
+        .json({
+          msg: "Some fields are not valid please check",
+          error: error,
+        });
+    }
   // verify user
     const user = await sails.models.signup.findOne({
       where: {
@@ -27,15 +57,20 @@ const registerUSer = async (req, res) => {
     }
 
     const result = await sails.models.signup.create(payload).fetch();
-    console.log(result, "result");
+    sails.log.inf('User created with id ->', result.id);
     res.status(200).json({ msg: "User Register successfully", user: result });
 };
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-
-  if(!email || !password){
-    return res.status(401).json({ msg: "all fields are required ..." });
+  const validation = validateLoginRequest(req.body);
+  if (validation.error) {
+    sails.log.warn('Validation failed for login user email ->', email);
+    return res.status(400)
+      .json({
+        msg: "Some fields are not valid please check",
+        error: error,
+      });
   }
   const user = await sails.models.signup.findOne({
     where: {
@@ -44,7 +79,7 @@ const loginUser = async (req, res) => {
   });
    
   if (!user) {
-    sails.log("User not found");
+    sails.log.info('Wrong user attempt to login with this email id -> ', email);
     return res.status(404).json({ msg: "User not found" });
   }
   // password validation 

@@ -1,8 +1,20 @@
+const Joi = require("joi");
+
+// Action: Validating the request 
+const validateRequest = async (payload) => {
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    quantity: Joi.number().required(),
+    price: Joi.number().required(),
+    user_id: Joi.number().required()
+  });
+  const validate = await schema.validate(payload);
+  return validate;
+};
+
 const createProduct = async (req, res) => {
   const { name, description, quantity, price } = req.body;
-  if (!name || !description || !quantity || !price) {
-    res.send(401).json({ msg: "all fields are required ..." });
-  }
   const payload = {
     name: name,
     description: description,
@@ -10,12 +22,20 @@ const createProduct = async (req, res) => {
     price: price,
     user_id: req.user.id,
   };
+
+  const {error, value} = validateRequest(payload);
+  if(error){
+      return res.status(400)
+        .json({
+          msg: "Some fields are not valid please check",
+          error: error,
+        });
+  }
   const product = await sails.models.products.create(payload).fetch();
   res
     .status(200)
     .json({ msg: "Product is created successfully", product: product });
 };
-
 const getAllProducts = async (req, res) => {
   const products = await sails.models.products.find({
     where: {
@@ -30,7 +50,7 @@ const getAllProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   const id = +req.params.id;
   if (!id) {
-    return res.status(401).json({ msg: "Product id is not valid" });
+    return res.status(400).json({ msg: "Product id is not valid" });
   }
   sails.log.info('Get product for this id', id);
   const product = await sails.models.products.findOne({
@@ -51,7 +71,7 @@ const updateProduct = async (req, res) => {
   const id = +req.params.id;
   if (!id) {
     sails.log.error('Wrong id used');
-    return res.status(401).json({ msg: "Product id is not valid" });
+    return res.status(400).json({ msg: "Product id is not valid" });
   }
   sails.log.info('Update product for this id', id);
   const product = await sails.models.products
@@ -74,7 +94,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   const id = +req.params.id;
   if (!id) {
-    return res.status(401).json({ msg: "Product id is not valid" });
+    return res.status(400).json({ msg: "Product id is not valid" });
   }
   sails.log.info('Delete product for this id', id);
   const product = await sails.models.products

@@ -24,6 +24,10 @@ module.exports.policies = {
     'getProductById': ['tokenValidator'],
     'updateProduct': ['tokenValidator'],
     'deleteProduct': ['tokenValidator'],
+    'createS': ['tokenValidator'],
+  },
+  ProductSizesController :{
+    'createSizes': ['tokenValidator'],
   }
 
   
