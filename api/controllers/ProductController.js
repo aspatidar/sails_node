@@ -27,7 +27,7 @@ const createProduct = async (req, res) => {
   const { error, value } = validateRequest(payload);
   if (error) {
     return res.status(400).json({
-      msg: "Some fields are not valid please check",
+      msg: sails.__('FieldsValidationError'),
       error: error,
     });
   }
@@ -53,7 +53,7 @@ const getAllProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   const id = +req.params.id;
   if (!id) {
-    return res.status(400).json({ msg: "Product id is not valid" });
+    return res.status(400).json({ msg: sails.__('IdNotValid') });
   }
   sails.log.info("Get product for this id", id);
   const product = await sails.models.products.findOne({
@@ -75,7 +75,7 @@ const updateProduct = async (req, res) => {
   const id = +req.params.id;
   if (!id) {
     sails.log.error("Wrong id used");
-    return res.status(400).json({ msg: "Product id is not valid" });
+    return res.status(400).json({ msg: sails.__('IdNotValid') });
   }
   sails.log.info("Update product for this id", id);
   const product = await sails.models.products
@@ -99,7 +99,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   const id = +req.params.id;
   if (!id) {
-    return res.status(400).json({ msg: "Product id is not valid" });
+    return res.status(400).json({ msg: sails.__('IdNotValid') });
   }
   sails.log.info("Delete product for this id", id);
   const product = await sails.models.products

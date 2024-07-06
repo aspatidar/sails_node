@@ -23,7 +23,7 @@ const createProductSizes = async (req, res) => {
   const { error, value } = validateRequest(payload);
   if (error) {
     return res.status(400).json({
-      msg: "Some fields are not valid please check",
+      msg: sails.__('FieldsValidationError'),
       error: error,
     });
   }
@@ -58,7 +58,7 @@ const updateProductSize = async(req,res) =>{
   const id = +req.params.id;
   if (!id) {
     sails.log.error("Wrong id used");
-    return res.status(400).json({ msg: "Product id is not valid" });
+    return res.status(400).json({ msg: sails.__('IdNotValid')});
   }
   sails.log.info("Update size for this product id", id);
   const product = await sails.models.productsizes
@@ -81,7 +81,7 @@ const updateProductSize = async(req,res) =>{
 const deleteProductSize = async (req, res) => {
   const id = +req.params.id;
   if (!id) {
-    return res.status(400).json({ msg: "Product id is not valid" });
+    return res.status(400).json({ msg: sails.__('IdNotValid') });
   }
   sails.log.info("Delete product for this id", id);
   const product = await sails.models.productsizes

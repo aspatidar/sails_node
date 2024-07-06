@@ -44,7 +44,7 @@ const registerUSer = async (req, res) => {
   if (error) {
     sails.log.warn("Validation failed for user creation");
     return res.status(400).json({
-      msg: "Some fields are not valid please check",
+      msg: sails.__('FieldsValidationError'),
       error: error,
     });
   }

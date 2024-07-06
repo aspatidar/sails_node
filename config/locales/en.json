@@ -1,4 +1,8 @@
 {
   "Welcome": "Welcome",
-  "A brand new app.": "A brand new app."
+  "A brand new app.": "A brand new app.",
+  "FieldsValidationError": "Some fields are not valid please check",
+  "IdNotValid": "Invalid product id",
+  "InvalidToken": "Invalid access token",
+  "TokenNotFound": "Access token not found"
 }
