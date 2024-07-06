@@ -31,7 +31,10 @@ module.exports.routes = {
   'get /api/product/:id': 'ProductController.getProductById',
   'patch /api/product/update/:id': 'ProductController.updateProduct',
   'delete /api/product/delete/:id': 'ProductController.deleteProduct',
-  'post /api/product/size/create': 'ProductSizesController.createSizes',
+  'post /api/product/size/create': 'ProductSizesController.createProductSizes',
+  'get /api/product/sizes': 'ProductSizesController.getAllProductSizes',
+  'patch /api/product/size/update/:id': 'ProductSizesController.updateProductSize',
+  'patch /api/product/size/delete/:id': 'ProductSizesController.deleteProductSize',
 
 
 

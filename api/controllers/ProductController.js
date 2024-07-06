@@ -36,6 +36,8 @@ const createProduct = async (req, res) => {
     .status(200)
     .json({ msg: "Product is created successfully", product: product });
 };
+
+// Action: Get all products 
 const getAllProducts = async (req, res) => {
   const products = await sails.models.products.find({
     where: {

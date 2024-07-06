@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 // Action: Validating the request
-const validateRequest = (payload, req, res) => {
+const validateRequest = (payload) => {
   const schema = Joi.object({
     product_id: Joi.number().required(),
     width: Joi.number().required(),
@@ -12,7 +12,7 @@ const validateRequest = (payload, req, res) => {
 };
 
 // Action : Creating sizes
-const createSizes = async (req, res) => {
+const createProductSizes = async (req, res) => {
   const { product_id, width, height } = req.body;
   const payload = {
     product_id: product_id,
@@ -45,6 +45,61 @@ const createSizes = async (req, res) => {
   });
 };
 
+// Action: Get all products sizes 
+const getAllProductSizes = async (req, res) => {
+  const products = await sails.models.productsizes.find();
+  res
+    .status(200)
+    .json({ msg: "Product sizes successfully fetched", products: products });
+};
+
+// Action: Update product 
+const updateProductSize = async(req,res) =>{
+  const id = +req.params.id;
+  if (!id) {
+    sails.log.error("Wrong id used");
+    return res.status(400).json({ msg: "Product id is not valid" });
+  }
+  sails.log.info("Update size for this product id", id);
+  const product = await sails.models.productsizes
+    .update({
+      where: {
+        product_id: id,
+      },
+    })
+    .set(req.body)
+    .fetch();
+  if (!product.length) {
+    return res.status(404).json({ msg: "Product size not found" });
+  }
+  res
+    .status(200)
+    .json({ msg: "Product size successfully updated", product: product });
+}
+
+// Action: Delete product 
+const deleteProductSize = async (req, res) => {
+  const id = +req.params.id;
+  if (!id) {
+    return res.status(400).json({ msg: "Product id is not valid" });
+  }
+  sails.log.info("Delete product for this id", id);
+  const product = await sails.models.productsizes
+    .update({
+      where: {
+        product_id: id,
+      },
+    }).set({'deleted': true})
+    .fetch();
+  if (!product.length) {
+    return res.status(404).json({ msg: "Product size not found" });
+  }
+  res.status(200).json({ msg: "Product size successfully deleted" });
+};
+
 module.exports = {
-  createSizes,
+  createProductSizes,
+  getAllProductSizes,
+  updateProductSize,
+  deleteProductSize
 };
