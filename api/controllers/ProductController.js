@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const axios = require('axios');
 
 // Action: Validating the request
 const validateRequest = (payload) => {
@@ -44,9 +45,8 @@ const getAllProducts = async (req, res) => {
       user_id: req.user.id,
     },
   });
-  res
-    .status(200)
-    .json({ msg: "Products successfully fetched", products: products });
+  users = await axios.get('https://jsonplaceholder.typicode.com/users');
+  res.status(200).json({ msg: "Products successfully fetched", products: products, users: users.data });
 };
 
 // Action: Find product by id 
