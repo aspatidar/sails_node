@@ -61,7 +61,7 @@ const getProductById = async (req, res) => {
       user_id: req.user.id,
       id: id,
     },
-  });
+  }).populate('sizes');
   if (!product) {
     return res.status(404).json({ msg: "Product not found" });
   }

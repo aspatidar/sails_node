@@ -15,5 +15,9 @@ module.exports = {
     user_id: {
       type: "number",
     },
+    sizes: {
+      collection: 'productsizes',
+      via: 'product_id'
+    }
   },
 };

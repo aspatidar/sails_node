@@ -4,7 +4,8 @@ module.exports = {
   tableName: "product_sizes",
   attributes: {
     product_id: {
-      type: "number",
+      model: 'products',
+      unique: true
     },
     width: {
       type: "number",
