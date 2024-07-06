@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-// Action: Validating the request 
+// Action: Validating the request
 const validateRequest = (payload, req, res) => {
   const schema = Joi.object({
     product_id: Joi.number().required(),
@@ -11,7 +11,7 @@ const validateRequest = (payload, req, res) => {
   return validate;
 };
 
-// Action : Creating sizes 
+// Action : Creating sizes
 const createSizes = async (req, res) => {
   const { product_id, width, height } = req.body;
   const payload = {
@@ -20,15 +20,14 @@ const createSizes = async (req, res) => {
     height: height,
   };
 
-  const {error, value} = validateRequest(payload);
+  const { error, value } = validateRequest(payload);
   if (error) {
-    return res.status(400)
-      .json({
-        msg: "Some fields are not valid please check",
-        error: error,
-      });
-  }if(error){
-
+    return res.status(400).json({
+      msg: "Some fields are not valid please check",
+      error: error,
+    });
+  }
+  if (error) {
   }
   const productSize = await sails.models.productsizes.find({
     where: {
@@ -40,11 +39,10 @@ const createSizes = async (req, res) => {
   }
   sails.log.info("Size creation initiated for this product id ->", product_id);
   const sizes = await sails.models.productsizes.create(payload).fetch();
-  res.status(200)
-    .json({
-      msg: "Size successfully created for the product",
-      product_size: sizes,
-    });
+  res.status(200).json({
+    msg: "Size successfully created for the product",
+    product_size: sizes,
+  });
 };
 
 module.exports = {

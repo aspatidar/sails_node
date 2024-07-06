@@ -9,7 +9,17 @@
  * https://sailsjs.com/config/bootstrap
  */
 
-module.exports.bootstrap = async function() {
+module.exports.bootstrap = async () => {
+  const schedule = require('node-schedule');
+
+  const job = schedule.scheduleJob('30 11 * * *', async () => {
+    const items = await sails.models.productsizes.destroy({
+      where:{
+          deleted: true
+      }
+  }).fetch();
+  sails.log.info('Unwanted data deleted', items);
+  });
 
   // By convention, this is a good place to set up fake data during development.
   //
