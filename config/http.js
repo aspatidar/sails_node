@@ -55,6 +55,11 @@ module.exports.http = {
       return middlewareFn;
     })(),
 
+    // bodyParser: (function _configureBodyParser(){
+    //     var skipper = require('skipper');
+    //     var middlewareFn = skipper({strict: true});
+    //     return middlewareFn;
+    //   })(),
   },
 
 };
